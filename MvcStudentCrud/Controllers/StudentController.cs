@@ -115,7 +115,11 @@ namespace MvcStudentCrud.Controllers
         // GET: /Student/ConfirmDelete/5
         public IActionResult ConfirmDelete(int id)
         {
-              
+            var student = _repo.GetById(id);
+            if (student == null)
+                return NotFound();
+
+            return View(student);
         }
 
         // POST: /Student/DeleteConfirmed/5
