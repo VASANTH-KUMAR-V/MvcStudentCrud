@@ -3,6 +3,7 @@ using StudentDb.Models;
 using StudentDb.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MvcStudentCrud.Controllers
 {
@@ -153,5 +154,108 @@ namespace MvcStudentCrud.Controllers
         {
             return new List<string> { "Karnataka", "Kerala", "Tamil Nadu", "Maharashtra",    };
         }
+
+
+
+        // Dashboard Model
+        // GET Dashboard
+        
+        public IActionResult Dashboard()
+        {
+            // Get all students
+            var students = _repo.GetAll();
+
+            // Calculate counts
+            ViewBag.TotalStudents = students.Count();
+            ViewBag.ActiveStudents = students.Count(s => s.Status);    // Status = true
+            ViewBag.InactiveStudents = students.Count(s => !s.Status); // Status = false
+
+            return View();
+        }
+        public IActionResult DashboardCounts()
+        {
+            var students = _repo.GetAll();
+
+            ViewBag.TotalStudents = students.Count();
+            ViewBag.ActiveStudents = students.Count(s => s.Status);
+            ViewBag.InactiveStudents = students.Count(s => !s.Status);
+
+            return PartialView("_DashboardCounts");
+        }
+
+
+        // Load List in Dashboard (AJAX)
+        public IActionResult LoadStudentList()
+        {
+            var students = _repo.GetAll();
+            return PartialView("_StudentList", students);
+        }
+
+        // GET: Add/Edit Popup
+        [HttpGet]
+        public IActionResult SavePopup(int? id)
+        {
+            ViewBag.States = GetStates();
+
+            if (id == null) // Add
+                return PartialView("_Save", new Student());
+
+            // Edit
+            var student = _repo.GetById(id.Value);
+            if (student == null)
+                return NotFound();
+
+            return PartialView("_Save", student);
+        }
+
+        // POST: Add/Edit
+        [HttpPost]
+        public IActionResult SavePopup(Student student)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.States = GetStates();
+                return PartialView("_Save", student);
+            }
+
+            string message;
+
+            if (student.Id == 0)
+            {
+                _repo.Add(student);
+                message = "Student has been added successfully!";
+            }
+            else
+            {
+                _repo.Update(student);
+                message = "Student has been updated successfully!";
+            }
+
+            return Json(new { success = true, message });
+        }
+
+
+        // Popup Details
+        public IActionResult DetailsPopup(int id)
+        {
+            return PartialView("_Details", _repo.GetById(id));
+        }
+
+        // Popup Delete Confirmation
+        public IActionResult DeletePopup(int id)
+        {
+            return PartialView("_Delete", _repo.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmedPopup(int id)
+        {
+            _repo.Delete(id);
+            return Json(new { success = true });
+        }
+
+        
+
+
     }
 }

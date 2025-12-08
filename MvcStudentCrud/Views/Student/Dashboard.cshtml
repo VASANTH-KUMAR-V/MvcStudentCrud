@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<div id="dashboardMessage"></div>
+
+<h2>Student Dashboard</h2>
+
+<!-- Dynamic Dashboard Counts -->
+<div id="dashboardCountsContainer">
+    @await Html.PartialAsync("_DashboardCounts")
+</div>
+
+<button class="btn btn-success mb-3" onclick="openPopup('/Student/SavePopup')">Add Student</button>
+
+<div id="studentListContainer"></div>
+
+<!-- SINGLE MODAL -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Load student list
+        function loadList() {
+            $("#studentListContainer").load("/Student/LoadStudentList", function () {
+                $('#studentTable').DataTable(); // re-initialize
+            });
+        }
+
+        // Refresh Dashboard counts
+        function refreshDashboardCounts() {
+            $("#dashboardCountsContainer").load("/Student/DashboardCounts");
+        }
+
+        // Open any popup
+        function openPopup(url) {
+            $.get(url, function (res) {
+                $("#modalContent").html(res);
+                $("#studentModal").modal("show");
+
+                // Bind Save button inside dynamically loaded partial
+                $("#btnSave").off("click").on("click", function () {
+                    var form = $("#saveForm");
+                    $.ajax({
+                        type: "POST",
+                        url: '/Student/SavePopup',
+                        data: form.serialize(),
+                        success: function (res) {
+                            if (res.success) {
+                                $("#studentModal").modal("hide");
+                                loadList();              // Reload student table
+                                refreshDashboardCounts(); // Reload dashboard counts
+                                alert(res.message);
+                            } else {
+                                $("#modalContent").html(res); // reload form with errors
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            loadList();
+
+            // Remove modal content when closed
+            $('#studentModal').on('hidden.bs.modal', function () {
+                $("#modalContent").html("");
+            });
+        });
+    </script>
+}

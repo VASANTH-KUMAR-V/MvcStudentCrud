@@ -1,0 +1,19 @@
+﻿@model StudentDb.Models.Student
+
+<div class="modal-header bg-danger text-white">
+    <h5 class="modal-title">Delete Student</h5>
+    <button class="close" data-dismiss="modal">&times;</button>
+</div>
+
+<div class="modal-body">
+
+    <p>Are you sure you want to delete <b>@Model.Name</b>?</p>
+
+    <form method="post" action="/Student/DeletePopup">
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    </form>
+
+</div>

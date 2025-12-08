@@ -40,7 +40,8 @@ namespace StudentDb.Repository
                     student.MobileNumber,
                     student.State,
                     student.Gender,
-                    student.Dob
+                    student.Dob,
+                    student.Status
                 },
                 commandType: CommandType.StoredProcedure
             );
@@ -58,7 +59,8 @@ namespace StudentDb.Repository
                     student.MobileNumber,
                     student.State,
                     student.Gender,
-                    student.Dob
+                    student.Dob,
+                    student.Status
                 },
                 commandType: CommandType.StoredProcedure
             );

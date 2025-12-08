@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StudentDb.Models.Student>
+
+<table class="table table-bordered" id="studentTable">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-white">ID</th>
+            <th class="text-white">Name</th>
+            <th class="text-white">Email</th>
+            <th class="text-white">Mobile</th>
+            <th  class="text-white">Status</th>
+            <th class="text-white">Action</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var s in Model)
+        {
+        <tr>
+            <td>@s.Id</td>
+            <td>@s.Name</td>
+            <td>@s.Email</td>
+            <td>@s.MobileNumber</td>
+            <td>
+                <span class="@(s.Status ? "text-success" : "text-danger")">
+                    @(s.Status ? "Active" : "Inactive")
+                </span>
+            </td>
+
+
+            <td>
+                <button class="btn btn-warning" onclick="openPopup('/Student/SavePopup?id=@s.Id')">Edit</button>
+
+                <button class="btn btn-info btn-sm" onclick="openPopup('/Student/DetailsPopup/@s.Id')">Details</button>
+                <button class="btn btn-danger btn-sm" onclick="openPopup('/Student/DeletePopup/@s.Id')">Delete</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#studentTable').DataTable();
+</script>

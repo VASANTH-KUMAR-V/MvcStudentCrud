@@ -1,0 +1,113 @@
+﻿@model StudentDb.Models.Student
+
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">@((Model.Id == 0) ? "Add Student" : "Edit Student")</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+    <form id="saveForm">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MobileNumber"></label>
+            <input asp-for="MobileNumber" class="form-control" />
+            <span asp-validation-for="MobileNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="State"></label>
+            <select asp-for="State" class="form-select" asp-items="@(new SelectList(ViewBag.States))">
+                <option value="">-- Select State --</option>
+            </select>
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label>Gender</label><br />
+            <div class="form-check form-check-inline">
+                <input type="radio" asp-for="Gender" class="form-check-input" value="Male" />
+                <label class="form-check-label">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" asp-for="Gender" class="form-check-input" value="Female" />
+                <label class="form-check-label">Female</label>
+            </div>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Dob"></label>
+            <input asp-for="Dob" type="date" class="form-control" />
+            <span asp-validation-for="Dob" class="text-danger"></span>
+        </div>
+
+        <label>Status</label><br />
+        <div class="form-check form-check-inline">
+            <input type="radio" name="Status" class="form-check-input" value="true" @(Model.Status ? "checked" : "") /> Active
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="radio" name="Status" class="form-check-input" value="false" @(!Model.Status ? "checked" : "") /> Inactive
+        </div>
+
+
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" id="btnSave" class="btn btn-success">@((Model.Id == 0) ? "Save" : "Update")</button>
+    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnSave").click(function () {
+                var form = $("#saveForm");
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Student/SavePopup',
+                    data: form.serialize(),
+                    success: function (res) {
+                        if (res.success) {
+                            // Hide modal
+                            $("#studentModal").modal("hide");
+
+                            // Reload student list
+                            loadList();
+
+                            // Show dashboard-level message
+                            var msgHtml = `<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                                    ${res.message}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                               </div>`;
+                            $("#dashboardMessage").html(msgHtml);
+
+                            // Auto-hide after 4 seconds
+                            setTimeout(function () {
+                                $(".alert").alert('close');
+                            }, 4000);
+                        } else {
+                            // If validation fails, reload the form inside modal
+                            $("#modalContent").html(res);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

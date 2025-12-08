@@ -27,5 +27,9 @@ namespace StudentDb.Models
         [Required(ErrorMessage = "Date of Birth is required")]
         [DataType(DataType.Date)]
         public DateTime Dob { get; set; }
+
+        [Required]
+        public bool Status { get; set; } // true = Active, false = Inactive
+
     }
 }
