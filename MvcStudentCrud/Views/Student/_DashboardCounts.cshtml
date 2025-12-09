@@ -1,17 +1,19 @@
-﻿<div class="row mb-3" id="dashboardCounts">
-    <div class="col-md-4">
-        <div class="card bg-primary text-white p-3">
-            <h4>Total Students: @ViewBag.TotalStudents</h4>
-        </div>
+﻿<!-- Stats Banner for Student Dashboard -->
+<div class="stats-banner student-stats-banner">
+
+    <div class="stat-block">
+        <div class="stat-value">@ViewBag.TotalStudents</div>
+        <div class="stat-desc">Total Students</div>
     </div>
-    <div class="col-md-4">
-        <div class="card bg-success text-white p-3">
-            <h4>Active Students: @ViewBag.ActiveStudents</h4>
-        </div>
+
+    <div class="stat-block">
+        <div class="stat-value">@ViewBag.ActiveStudents</div>
+        <div class="stat-desc">Active Students</div>
     </div>
-    <div class="col-md-4">
-        <div class="card bg-danger text-white p-3">
-            <h4>Inactive Students: @ViewBag.InactiveStudents</h4>
-        </div>
+
+    <div class="stat-block">
+        <div class="stat-value">@ViewBag.InactiveStudents</div>
+        <div class="stat-desc">Inactive Students</div>
     </div>
+
 </div>

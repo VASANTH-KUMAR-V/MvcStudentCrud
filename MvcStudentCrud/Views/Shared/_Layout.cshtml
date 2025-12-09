@@ -14,37 +14,43 @@
     <!-- jQuery UI -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
 
+    <!-- Your custom CSS -->
+    <link href="~/css/tooplate-inner-peace.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
 <body>
 
+    <!-- YOUR CUSTOM HEADER -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">MvcStudentCrud</a>
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <nav>
+            <a href="#hero" class="logo">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="url(#logoGradient)" stroke-width="2" />
+                    <circle cx="20" cy="20" r="14" fill="none" stroke="url(#logoGradient)" stroke-width="1.5" opacity="0.7" />
+                    <circle cx="20" cy="20" r="10" fill="none" stroke="url(#logoGradient)" stroke-width="1" opacity="0.5" />
+                    <circle cx="20" cy="20" r="6" fill="none" stroke="url(#logoGradient)" stroke-width="0.5" opacity="0.3" />
+                    <circle cx="20" cy="20" r="3" fill="url(#logoGradient)" />
+                </svg>
+                <span class="logo-text">Mvc Studnet CRUD</span>
+            </a>
 
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav mr-auto">
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Student" asp-action="Dashboard">Student Dashboard</a>
-                        </li>
-
-                    </ul>
-                </div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
             </div>
+
+            <ul class="nav-links">
+                <li><a href="/Home/Index" class="nav-link active">Home</a></li>
+                <li><a href="/Home/Privacy" class="nav-link">Privacy</a></li>
+                <li><a href="/Student/Dashboard" class="nav-link">Student Dashboard</a></li>
+            </ul>
         </nav>
     </header>
 
@@ -52,11 +58,29 @@
         @RenderBody()
     </div>
 
-    <footer class="border-top text-muted mt-5 p-3">
-        <div class="container">
-            &copy; 2025 - MvcStudentCrud
+    <!-- Custom Inner Peace Footer -->
+    <footer class="custom-footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#support">Support</a>
+            </div>
+
+            <div class="copyright">
+                <p>
+                    &copy; 2025 Inner Peace. All rights reserved.
+                    Nurturing minds, one breath at a time.
+                    Designed by
+                    <a rel="nofollow noopener" href="https://www.tooplate.com" target="_blank"
+                       style="color: var(--accent); text-decoration: none; transition: color 0.3s ease;">
+                        Student Crud
+                    </a>
+                </p>
+            </div>
         </div>
     </footer>
+
 
     <!-- jQuery -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -69,6 +93,13 @@
 
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- Your menu toggle script -->
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
 
     @RenderSection("Scripts", required: false)
 

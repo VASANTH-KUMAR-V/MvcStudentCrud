@@ -5,6 +5,13 @@ namespace StudentDb.Models
 {
     public class Student
     {
+
+        public Student()
+        {
+
+            Dob = DateTime.Today;
+        }
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
